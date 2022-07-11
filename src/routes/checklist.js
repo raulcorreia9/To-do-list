@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express();
+const router = express.Router();
 const Checklist = require('../models/checklist')
 
 //Find All
