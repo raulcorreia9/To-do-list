@@ -11,6 +11,8 @@ app.set('view engine', 'ejs');
 
 //middleware para leitura de json
 app.use(express.json());
+//middlware para usar arquivos estáticos
+app.use(express.static(path.join(__dirname, 'public')));
 app.use('/checklist', checkListRouter);
 app.use('/', indexRouter);
 
