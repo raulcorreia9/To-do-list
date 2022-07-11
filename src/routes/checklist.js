@@ -6,9 +6,9 @@ const Checklist = require('../models/checklist')
 router.get('/', async (req, res) => {
     try {
         let checkLists = await Checklist.find({});
-        res.status(200).json(checkLists);
+        res.status(200).render('checklists/index.ejs', { checklists: checkLists });
     } catch (error) {
-        res.status(400).json(error);
+        res.status(400).render('checklists/error.ejs', { error: error });
     }
 })
 
@@ -16,9 +16,9 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     try {
         let checkList = await Checklist.findById(req.params.id)
-        res.status(200).json(checkList);
+        res.status(200).render('checklists/show.ejs', { checklist: checkList });
     } catch (error) {
-        res.status(400).json(error);
+        res.status(400).render('checklists/error.ejs', { error: error });
     }
 })
 
