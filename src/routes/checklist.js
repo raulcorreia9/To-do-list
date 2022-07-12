@@ -37,7 +37,7 @@ router.post('/', async (req, res) => {
 //Find by Id
 router.get('/:id', async (req, res) => {
     try {
-        let checkList = await Checklist.findById(req.params.id)
+        let checkList = await Checklist.findById(req.params.id).populate('tasks');
         res.status(200).render('checklists/show.ejs', { checklist: checkList });
     } catch (error) {
         res.status(400).render('pages/error.ejs', { error: error });
@@ -64,17 +64,17 @@ router.put('/:id', async (req, res) => {
         await checklist.updateOne({ "name":name })
         res.status(201).redirect('/checklists');
     } catch (error) {
-        res.status(422).render(`checklists/${req.params.id}/edit`, { checklist: { ...checklist, error }});
+        res.status(422).render(`/checklists/${req.params.id}/edit`, { checklist: { ...checklist, error: error }});
     }
 })
 
 //Delete
 router.delete('/:id', async (req, res) => {
     try {
-        let checkList = await Checklist.findByIdAndRemove(req.params.id)
-        res.status(200).json(checkList);
+        await Checklist.findByIdAndRemove(req.params.id)
+        res.status(200).redirect('/checklists');
     } catch (error) {
-        res.status(400).json(error);
+        res.status(400).render('pages/error.ejs', { error: error });
     }
 })
 

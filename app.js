@@ -1,8 +1,13 @@
 const express = require('express');
+
+//Routes
 const checkListRouter = require('./src/routes/checklist')
-const indexRouter = require('./src/routes/index')
+const taskRouter = require('./src/routes/task')
+const indexRouter = require('./src/routes/index');
+
 const path = require('path')
 const methodOverride = require('method-override');
+
 //Executa o arquivo database.js assim que o app.js rodar
 require('./config/database');
 
@@ -17,14 +22,18 @@ app.use(express.urlencoded({ extended: true }));
 //middlware para usar arquivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(methodOverride('_method'));
+app.use(methodOverride('_method', { methods: ['POST', 'GET']}));
 
 app.use('/checklists', checkListRouter);
 app.use('/', indexRouter);
+//Rotas da Task que dependem do checklist ID
+app.use('/checklists', taskRouter.checklistDependent);
+//Rota da Task que não depede do checklist ID
+app.use('/tasks', taskRouter.simple);
 
-app.get('/', (req, res) => {
-    res.send('<h1>Opa! :)</h1>')
-})
+// app.get('/', (req, res) => {
+//     res.send('<h1>Opa! :)</h1>')
+// })
 
 app.listen(3000, () => {
     console.log('Rodando na porta 3000!');

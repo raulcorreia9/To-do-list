@@ -8,8 +8,8 @@
                     <h1 class="title size-4"><%= checklist.name %></h1>
                 </div>
                 <div class="column is-one-third">
-                    <a href="add-task.html" class="button is-success is-small">Nova Tarefa</a>
-                    <a href="/checklist" class="button is-small">Voltar</a>
+                    <a href="/checklists/<%= checklist._id %>/tasks/new" class="button is-success is-small">Nova Tarefa</a>
+                    <a href="/checklists" class="button is-small">Voltar</a>
                 </div>
             </div>
 
@@ -21,7 +21,7 @@
                     </div>
 
                     <div class="column is-one-fifth">
-                        <button class="button is-danger is-small">Remover</button>
+                        <a class="button is-danger is-small" href="/tasks/<%= task._id %>?_method=delete">Remover</a>
                     </div>
                 </div>
             <% }) %>
