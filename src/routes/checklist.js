@@ -12,6 +12,28 @@ router.get('/', async (req, res) => {
     }
 })
 
+router.get('/new', async(req, res) => {
+    try {
+        let checklist = new Checklist();
+        res.status(200).render('checklists/new.ejs', { checklist: checklist })
+    } catch (error) {
+        res.status(400).render('checklists/error.ejs', { error: error })
+    }
+})
+
+//Create
+router.post('/', async (req, res) => {
+    let { name } = req.body.checklist;
+    let checklist = new Checklist({ name })
+    
+    try {
+        await checklist.save();
+        res.status(201).redirect('/checklists');
+    } catch(error) {
+        res.status(422).render('checklists/new', { checklist: { ...checklist, error }});
+    }
+})
+
 //Find by Id
 router.get('/:id', async (req, res) => {
     try {
@@ -22,17 +44,6 @@ router.get('/:id', async (req, res) => {
     }
 })
 
-//Create
-router.post('/', async (req, res) => {
-    let { name } = req.body;
-    
-    try {
-        let checkList = await Checklist.create({ name });
-        res.status(201).json(checkList);
-    } catch(error) {
-        res.status(422).json(error);
-    }
-})
 
 //Update
 router.put('/:id', async (req, res) => {
