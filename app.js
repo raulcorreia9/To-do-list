@@ -2,6 +2,7 @@ const express = require('express');
 const checkListRouter = require('./src/routes/checklist')
 const indexRouter = require('./src/routes/index')
 const path = require('path')
+const methodOverride = require('method-override');
 //Executa o arquivo database.js assim que o app.js rodar
 require('./config/database');
 
@@ -15,6 +16,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 //middlware para usar arquivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(methodOverride('_method'));
 
 app.use('/checklists', checkListRouter);
 app.use('/', indexRouter);
